@@ -22,8 +22,8 @@
           
           <a class="nav-link" href="/listings/new">Arbnb your home</a>
           <% if(!currUser){ %>
-          <a class="nav-link" href="/signup"><b>Signup</b></a>
-          <a class="nav-link" href="/login"><b>Login</b></a>
+            <button class="btn btn-dark"><a class="nav-link" href="/signup"><b>Signup</b></a></button>
+            <button class="btn btn-dark"><a class="nav-link" href="/login"><b>Login</b></a></button>
           
           <% } %><% if(currUser){ %>
             <a class="nav-link" href="/logout"><b>Logout</b></a>
