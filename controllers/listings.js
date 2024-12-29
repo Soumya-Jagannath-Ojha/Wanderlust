@@ -83,3 +83,30 @@ module.exports.destroyListing = async(req,res)=> {
     console.log(deletedListing);
     res.redirect("/listings");
 };
+
+
+module.exports.search = async (req, res) => {
+    const { query } = req.body;
+   
+    
+    if(query.length === 0){
+        req.flash("error","Please enter something in search box for searching.");
+        return res.redirect("/listings");
+    }
+    if (query && query.trim()) {
+      const regex = new RegExp(query.trim(), 'i'); // Case-insensitive search
+      const searchQuery = {
+        $or: [{ country: regex }, { title: regex }],
+      };
+      const results = await Listing.find(searchQuery);
+      
+      
+      if(results.length===0){
+        req.flash("error","No listing found");
+        return res.redirect("/listings");
+      }
+      res.render("listings/search.ejs",{results})
+    } else {
+      req.flash("error","Error found");
+    }
+  };

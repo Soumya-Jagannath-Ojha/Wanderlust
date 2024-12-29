@@ -67,6 +67,8 @@ const sessionOptions = {
     },
 };
 const flash = require("connect-flash");
+const wrapAsync = require("./utils/wrapAsync.js");
+const { search } = require("./controllers/listings.js");
 app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
@@ -83,7 +85,14 @@ app.use((req,res,next)=>{
 });
 
 
+// app.post("/listing/search",(req,res)=>{
+//     console.log("inside search");
+//     const {query} = req.body;
+//     console.log(query);
+    
+// })
 
+app.post("/listing/search", wrapAsync(search));
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
