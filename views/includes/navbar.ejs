@@ -9,22 +9,22 @@
           <a class="nav-link" href="/listings">Explore</a> 
         </div>
 
-        <div class="navbar-nav ms-auto">
+        <!-- <div class="navbar-nav ms-auto">
           <form method="POST" action="/listing/search" class="d-flex" role="search">
             <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination" >
               <button class="btn search-btn" type="submit">
                 <i class="fa-solid fa-magnifying-glass"></i>Search
               </button> 
           </form>
-        </div>
-        <!-- <div class="input-group search-box">
-          <form class="d-flex mx-3" action="/listing/search" method="post">
-            <input class="form-control search-in" type="search" name="query" placeholder="Search your Airbnb.."
-              aria-label="Search" aria-describedby="button-addon2">
-            <button class="btn btn-outline-danger search" type="submit" id="button-addon2"><i
-                class="fas fa-search"></i></button>
-          </form>
         </div> -->
+        <div class="navbar-nav ms-auto">
+          <form method="POST" action="/listing/search" class="d-flex search-box" role="search">
+            <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination" >
+              <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>Search
+              </button> 
+          </form>
+        </div>
 
         <div class="navbar-nav ms-auto">
           
@@ -39,6 +39,17 @@
             <% } %>
         </div>
       </div>
+
+      <!-- <div class="navbar-nav ms-auto">
+        <form method="POST" action="/listing/search" class="d-flex search-box" role="search">
+          <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination" >
+            <button class="btn search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>Search
+            </button> 
+        </form>
+      </div> -->
+
+
     </div>
   </nav>
 
@@ -48,6 +59,11 @@
     color: #fff;
     border-radius:25px;
     padding: 0 1rem 0 1rem;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px; /* Default font size for text */
+  padding: 0.5rem 1rem; /* Default padding */
   }
   .search-btn:hover{
     background-color: #fe424d;
@@ -61,4 +77,35 @@
     border-radius: 25px;
     padding: 0.5rem 3rem 0.5rem 3rem;
   }
+  
+  .search-box{
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+  .search-box {
+    width: 100%; /* Adjust width as needed */
+    margin-top: 10px; /* Add spacing if required */
+  }
+
+  .search-box .form-control {
+    width: 70%; /* Adjust the input size */
+    font-size: 14px; /* Optional: smaller font size */
+  }
+  .search-btn {
+    /* background-color: yellow; */
+    font-size: 0; /* Hide the text */
+    padding: 0.5rem; /* Reduce button size */
+  }
+
+  .search-btn i {
+    font-size: 1.2rem; /* Keep the icon visible and adjust size */
+  }
+
+  .search-box .btn {
+    font-size: 0px; /* Optional: smaller button font size */
+    padding: 0.3rem 0.5rem; /* Adjust padding */
+  }
+}
 </style>
