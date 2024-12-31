@@ -85,12 +85,7 @@ app.use((req,res,next)=>{
 });
 
 
-// app.post("/listing/search",(req,res)=>{
-//     console.log("inside search");
-//     const {query} = req.body;
-//     console.log(query);
-    
-// })
+
 
 app.post("/listing/search", wrapAsync(search));
 

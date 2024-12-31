@@ -1,44 +1,83 @@
 <% layout("/layouts/boilerplate") %>
-<div class="row mt-3">
-    <div class="col-8 offset-2">
-<body>
-    <h2>Create a New Listing</h2>
-    <form method="POST" action="/listings"  novalidate class="needs-validation" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input name="listing[title]" placeholder="Add a catchy title" type="text" class="form-control" required/>
-            <div class="valid-feedback">Title looks Good!</div>
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control" required></textarea>
-            <div class="invalid-feedback">Please Enter a short description</div>
-        </div>
-        
-        <div class="mb-3">
-            <label for="image" class="form-label">Upload New Image</label>
-            <input name="listing[image]" placeholder="Enter image URL/link" type="file" class="form-control" required>
-        </div>
-        <div class="row" >
-            <div class="mb-3 col-md-4">
-                <label for="price" class="form-label">Price</label>
-                <input name="listing[price]" placeholder="1200" type="text" class="form-control" required>
-                <div class="invalid-feedback">Price should be valid</div>
-            </div>
-            <div class="mb-3 col-md-8">
-                <label for="country" class="form-label">Country</label>
-                <input name="listing[country]" placeholder="India" type="text" class="form-control" required>
-                <div class="invalid-feedback">Country should be valid</div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input name="listing[location]" placeholder="Cuttack,Odisha" type="text" class="form-control" required>
-            <div class="invalid-feedback">Location should be valid</div>
-        </div>
-        <button class="btn btn-dark add-btn mb-3">ADD</button>
-    </form>
-</body>
+    <div class="row mt-3">
+        <div class="col-8 offset-2">
 
-  </div>
-</div>
+            <body>
+                <h2>Create a New Listing</h2>
+                <form method="POST" action="/listings" novalidate class="needs-validation"
+                    enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input name="listing[title]" placeholder="Add a catchy title" type="text" class="form-control"
+                            required />
+                        <div class="valid-feedback">Title looks Good!</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="listing[description]" class="form-control" required></textarea>
+                        <div class="invalid-feedback">Please Enter a short description</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload New Image</label>
+                        <input name="listing[image]" placeholder="Enter image URL/link" type="file" class="form-control"
+                            required>
+                    </div>
+
+
+                    <!-- <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input class="form-check-input tag-checkbox" type="checkbox" name="listing[tag]" id="tag" value="beach" >
+            <label class="form-check-label" for="tag">beach</label>
+            <div class="valid-feedback">Title looks Good!</div>
+        </div> -->
+
+                    <!-- Tags section -->
+                    <div class="mb-3 listing_form">
+                        <label for="tags" class="form-label">Tags</label>
+                        <br>
+                        <div class="filter-tag">
+                            <% const tags=["Trending", "Surfing" , "Amazing cities" , "Beach" , "Farms" , "Lake"
+                                , "Castles" , "Rooms" , "Forest" , "Pool" ]; %>
+                                <% tags.forEach(tag=> { %>
+                                    <div class="indi-filter">
+                                        <div class="form-check form-check-inline" required>
+                                            <input class="form-check-input tag-checkbox" type="checkbox"
+                                                name="listing[tag]" id="tag<%= tag %>" value="<%= tag %>">
+                                            <label class="form-check-label" for="tag<%= tag %>">
+                                                <%= tag %>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                        </div>
+                        <small class="form-text tag-alert">Maximum 3 tags are allowed!</small>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="price" class="form-label">Price</label>
+                            <input name="listing[price]" placeholder="1200" type="text" class="form-control" required>
+                            <div class="invalid-feedback">Price should be valid</div>
+                        </div>
+                        <div class="mb-3 col-md-8">
+                            <label for="country" class="form-label">Country</label>
+                            <input name="listing[country]" placeholder="India" type="text" class="form-control"
+                                required>
+                            <div class="invalid-feedback">Country should be valid</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input name="listing[location]" placeholder="Cuttack,Odisha" type="text" class="form-control"
+                            required>
+                        <div class="invalid-feedback">Location should be valid</div>
+                    </div>
+                    <button class="btn btn-dark add-btn mb-3">ADD</button>
+                </form>
+            </body>
+
+        </div>
+    </div>

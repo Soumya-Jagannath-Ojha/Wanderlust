@@ -3,10 +3,10 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
-module.exports.index = async(req,res) =>{
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", {allListings});
-};
+// module.exports.index = async(req,res) =>{
+//     const allListings = await Listing.find({});
+//     res.render("listings/index.ejs", {allListings});
+// };
 
 module.exports.renderNewForm = (req,res) =>{
     res.render("listings/new.ejs");
@@ -30,7 +30,7 @@ module.exports.showListing = async (req,res)=>{
 };
 
 module.exports.createListing = async(req,res,next) =>{
-    
+ 
     let response = await geocodingClient
         .forwardGeocode({
             query: req.body.listing.location,
@@ -43,6 +43,10 @@ module.exports.createListing = async(req,res,next) =>{
     newListing.owner = req.user._id;
     newListing.image = {url,filename};
     newListing.geometry = response.body.features[0].geometry;
+    // let tags = req.body.listing.tag;
+    let {tag} = req.body.listing;
+    tag = Array.isArray(tag) ? tag : [tag];
+    // newListing.tag = Array.isArray(req.body.listing.tag) ? req.body.listing.tag : [req.body.listing.tag];
     let savedListing = await newListing.save();
     console.log(savedListing);
     req.flash("success","New Listing Created !");
@@ -110,3 +114,38 @@ module.exports.search = async (req, res) => {
       req.flash("error","Error found");
     }
   };
+
+
+  module.exports.index = async (req, res) => {
+    try {
+        const { tag } = req.query;
+        
+        
+        let allListings;
+
+        // Check if tag is present in query
+        if (tag) {
+            // Search for listings where the tags array contains the selected tag
+            allListings = await Listing.find({ tag: { $in: [tag] } });
+            
+            // If no listings are found for the tag, flash a message
+            if (allListings.length === 0) {
+                req.flash('error', `No listings found for the tag "${tag}".`);
+                return res.redirect("/listings");
+            }
+            
+            // console.log(listings);
+        } else {
+            // If no tag is selected, return all listings
+            allListings = await Listing.find({});
+        }
+
+        // Render the listings page and pass the listings and tag data
+        res.render("listings/index.ejs", { allListings, tag });
+
+    } catch (err) {
+        console.error("Error fetching listings:", err);
+        req.flash("error", "Error fetching listings");
+        return res.redirect("/");  // Redirect to the homepage on error
+    }
+};

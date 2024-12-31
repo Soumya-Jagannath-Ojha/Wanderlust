@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Review = require("./review.js");
+// const { required } = require("joi");
 
 const listingSchema = new Schema({
   title: {
@@ -11,6 +12,10 @@ const listingSchema = new Schema({
   image: {
     url: String,
     filename: String,
+  },
+  tag: {
+    type: [String],
+    required: true,
   },
   price: Number,
   location: String,

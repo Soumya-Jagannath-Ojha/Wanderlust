@@ -91,6 +91,7 @@ body{
     background-color: white;
 }
 
+
 /* New Page */
 .add-btn{
     background-color: #fe424d !important;
@@ -102,6 +103,21 @@ body{
     background-color: #fe424d !important;
     border: none !important;
 }
+
+.filter-tag{
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.indi-filter{
+    padding: 0.1rem 0 0.1rem 0.6rem;
+    background-color: #d3d3d3;
+    margin-left: 0.4rem;
+    border-radius: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+
 
 /* Show page */
 .show-img{
