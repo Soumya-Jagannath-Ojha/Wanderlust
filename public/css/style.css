@@ -102,7 +102,54 @@ body{
 .edit-btn{
     background-color: #fe424d !important;
     border: none !important;
+    /* border-radius: 15px !important; */
 }
+
+#filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter {
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+
+        .toggle-filter {
+            text-align: right;
+            margin-right: 2rem;
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .filter p {
+            font-size: 0.8rem;
+        }
+
+
+        .tax-info {
+            display: none;
+        }
+
+        .tax-toggle {
+            border: 1px solid rgba(0, 0, 0, 0.516);
+            border-radius: 1rem;
+            height: 3.25rem;
+            padding: 1rem;
+            margin-left: 2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
 
 .filter-tag{
     display: inline-flex;
@@ -132,3 +179,46 @@ body{
     height: 400px;
     width: 80vh;
 }
+
+
+
+/* Mobile View Adjustments */
+        @media (max-width: 768px) {
+            #filters {
+                justify-content: space-evenly;
+                gap: 8px;
+            }
+
+            .filter {
+                width: 20px;
+                padding: 6px;
+            }
+
+            .filter i {
+                font-size: 18px;
+            }
+
+            .filter p {
+                font-size: 9px;
+            }
+
+
+
+        }
+
+        /* Very Small Mobile View */
+        @media (max-width: 480px) {
+            .filter {
+                width: 70px;
+                /* Further reduce width */
+                padding: 6px;
+            }
+
+            .filter i {
+                font-size: 18px;
+            }
+
+            .filter p {
+                font-size: 10px;
+            }
+        }
