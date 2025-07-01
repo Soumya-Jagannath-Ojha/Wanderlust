@@ -11,25 +11,28 @@
             icon: "fa-cow" }, { name: "Lake" , icon: "fa-mountain" }, { name: "Castles" ,
             icon: "fa-brands fa-fort-awesome" }, { name: "Rooms" , icon: "fa-bed" }, { name: "Forest" , icon: "fa-tree"
             }, { name: "Pool" , icon: "fa-person-swimming" } ]; %>
-            <% tags.forEach(tag=> { %>
-                <div class="filter">
 
-                    <!-- <div class="filter"> -->
-                    <a style="text-decoration: none;" href="/listings?tag=<%=tag.name%>" class="filter-link">
-                        <div><i class="fa-solid <%= tag.icon %>"></i></div>
-                        <p>
-                            <%= tag.name %>
-                        </p>
-                        <!-- </div> -->
-                    </a>
+            <div class="filters-wrapper" id="filtersWrapper">
+                <% tags.forEach(tag=> { %>
+                    <div class="filter">
 
-
-                </div>
-                <% }) %>
+                        <!-- <div class="filter"> -->
+                        <a style="text-decoration: none;" href="/listings?tag=<%=tag.name%>" class="filter-link">
+                            <div><i class="fa-solid <%= tag.icon %>"></i></div>
+                            <p>
+                                <%= tag.name %>
+                            </p>
+                            <!-- </div> -->
+                        </a>
 
 
+                    </div>
+                    <% }) %>
 
-                    <!-- <div class="toggle-filter">
+            </div>
+
+            
+            <!-- <div class="toggle-filter">
                         <div class="tax-toggle">
                             <div class="form-check form-switch form-check-reverse">
                                 <input class="form-check-input" type="checkbox" role="switch"
@@ -104,5 +107,15 @@
                 sidebar.classList.remove('show');
             }
         });
+
+
+        function scrollFiltersRight() {
+            const wrapper = document.getElementById('filtersWrapper');
+            wrapper.scrollBy({
+                left: 150,
+                behavior: 'smooth'
+            })
+        }
+
 
     </script>

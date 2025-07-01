@@ -13,10 +13,19 @@ body{
     height: 5rem;
     background-color: white;
 }
-.fa-compass{
+/* .fa-compass{
+    color: #fe424d;
+    font-size: 2rem;
+} */
+.fa-route{
     color: #fe424d;
     font-size: 2rem;
 }
+
+.logo-text{
+    font-weight: 700 !important;
+}
+
 .nav-link{
     color: #222222 !important;
 }
@@ -174,6 +183,18 @@ body{
     display: flex;
 }
 
+.signup{
+    padding: 5px 15px !important;
+    color: #222222 !important;
+    background-color: white !important;
+}
+.signup>a>b{
+    color: #222222 !important;
+}
+.login{
+    padding: 5px 15px !important;
+}
+
 /* Map */
 #map{
     height: 400px;
@@ -206,10 +227,19 @@ body{
 
         }
 
+
+        .filter-scroll-wrapper{
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+
         /* Very Small Mobile View */
         @media (max-width: 480px) {
+            
             .filter {
-                width: 70px;
+                width: 51px;
                 /* Further reduce width */
                 padding: 6px;
             }
@@ -222,3 +252,38 @@ body{
                 font-size: 10px;
             }
         }
+
+
+
+
+.filters-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    scroll-behavior: smooth;
+}
+
+
+@media (max-width: 768px) {
+    .filters-wrapper{
+        display: flex;
+        /* justify-content: center;
+        align-items: center; */
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 0.2rem;
+        padding-bottom: 0.5rem;
+    }
+    .filter{
+        flex: 0 0 auto;
+        text-align: center;
+        min-width: 25px;
+    }
+    .filter-link{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+  
+}
