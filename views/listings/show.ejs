@@ -6,29 +6,11 @@
 
 
     <style>
-        @media (max-width: 768px) {
-            .map {
-                height: 340px;
-                width: 340px;
-            }
-
+        @media (max-width: 550px) {
             #map {
-                width: 64vh;
-            }
-
-
-        }
-        @media (max-width: 510px) {
-            .map {
                 height: 340px;
-                width: 340px;
+                width: 95vw;
             }
-
-            #map {
-                width: 43vh;
-            }
-
-
         }
         
     </style>
@@ -48,7 +30,7 @@
                 <p class="card-text">
                     <%= listing.description %>
                 </p>
-                <p class="card-text"> &#8377; <%= listing.price.toLocaleString("en-IN") %>
+                <p class="card-text price"> &#8377; <%= listing.price.toLocaleString("en-IN") %>/ night
                 </p>
                 <p class="card-text">
                     <%= listing.location %>
@@ -134,7 +116,7 @@
             </div>
             <div class="lg-col-6  md-col-5 sm-col-6 sm-offset-1 md-offset-1 lg-offset-2 mb-3">
                 <h2>Where you'll be</h2>
-                <div id="map" class="sm-w-50 map"></div>
+                <div id="map" class="map"></div>
             </div>
     </div>
 
