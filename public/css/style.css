@@ -141,20 +141,29 @@ footer{
 .listing-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.72) 0%,
-        rgba(0, 0, 0, 0.35) 40%,
-        transparent 70%
-    );
     display: flex;
     align-items: flex-end;
     padding: 1.25rem;
     border-radius: 1.25rem;
 }
 
+.listing-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 35%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    mask-image: linear-gradient(to top, black 0%, black 15%, transparent 35%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, black 15%, transparent 35%);
+    border-radius: 1.25rem;
+}
+
 .listing-info {
+    position: relative;
+    z-index: 1;
     color: #fff;
+    width: 100%;
 }
 
 .listing-title {
@@ -251,21 +260,45 @@ footer{
 
 /* Show page */
 .show-detail-card {
-    /* No border or shadow, matching reference image */
+    position: relative;
+    border-radius: 1.5rem;
+    overflow: hidden;
     margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 .show-detail-img {
     width: 100%;
-    height: 55vh;
-    min-height: 380px;
+    height: 70vh;
+    min-height: 500px;
     object-fit: cover;
     display: block;
-    border-radius: 1rem; /* Rounded corners on image */
 }
 
-.show-detail-body {
-    padding: 1rem 0; /* Align text with image left edge */
+.show-detail-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10rem 2.5rem 2.5rem 2.5rem;
+}
+
+.show-detail-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 40%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    mask-image: linear-gradient(to top, black 0%, black 15%, transparent 40%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, black 15%, transparent 40%);
+    z-index: 0;
+}
+
+.show-detail-overlay > * {
+    position: relative;
+    z-index: 1;
 }
 
 .btns{
