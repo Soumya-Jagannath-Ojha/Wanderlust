@@ -87,6 +87,10 @@ app.use((req,res,next)=>{
 
 
 
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
 app.post("/listing/search", wrapAsync(search));
 
 app.use("/listings",listingRouter);

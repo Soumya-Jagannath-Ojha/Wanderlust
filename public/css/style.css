@@ -60,44 +60,10 @@ nav{
     height: 100vh;
 } */
 
-
 /* Footer */
-footer{
-    /* position: absolute;
-    bottom: 0;
-    width: 100%; */
-    /* display: flex;
-    align-items: center;
-    justify-content: flex-end; */
-}
-.f-info-links a{
-    text-decoration: none;
-    color: #222222;
-}
-.f-info-links a:hover{
-    text-decoration: underline;
-}
-.f-info-links , .f-info-socials, .f-info-brand{
+footer {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-.f-info-links{
-    gap: 0.3rem;
-}
-
-.f-info-socials i{
-    font-size: 1.2rem;
-    margin-right: 1rem;
-}
-.f-info{
-    text-align: center;
-    height: 8rem;
-    background-color: #ebebeb;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     align-items: space-evenly;
 }
 
@@ -315,7 +281,7 @@ footer{
     color: #222222 !important;
 }
 .login{
-    padding: 5px 15px !important;
+    padding: 3px 10px !important;
 }
 
 /* Map */
@@ -434,3 +400,12 @@ footer{
 /* Button overrides for add/edit */
 .add-btn { background-color: #FFB600 !important; border-color: #FFB600 !important; color: #222 !important; }
 .edit-btn { background-color: #FFB600 !important; border-color: #FFB600 !important; color: #222 !important; }
+
+/* Perfect centering for navbar search box on desktop */
+@media (min-width: 768px) {
+    .search-container {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
