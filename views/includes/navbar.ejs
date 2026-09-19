@@ -1,11 +1,36 @@
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings">
+    <a class="navbar-brand m-0" href="/listings">
       <img src="/img/logo.svg" alt="TravelNest" height="55">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+
+    <div class="d-flex align-items-center">
+      <% if(typeof currUser !== 'undefined' && currUser){ %>
+        <!-- Mobile Profile Bubble -->
+        <div class="nav-item dropdown d-md-none me-2">
+          <a class="nav-link dropdown-toggle d-flex align-items-center bg-white border rounded-pill py-1 px-2 shadow-sm"
+            href="#" id="mobileProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+            style="text-decoration: none;">
+            <div class="rounded-circle me-1 d-flex align-items-center justify-content-center text-white"
+              style="width: 32px; height: 32px; background-color: #a1a1aa;">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="d-flex flex-column lh-sm me-2">
+              <span class="text-dark fw-semibold" style="font-size: 0.85rem; line-height: 1.2;">@<%= currUser.username %></span>
+              <span class="text-primary" style="font-size: 0.7rem;">Explorer</span>
+            </div>
+          </a>
+          <ul class="dropdown-menu shadow-sm border-0 mt-2 rounded-3 dropdown-menu-end" aria-labelledby="mobileProfileDropdown" style="min-width: 150px; position: absolute;">
+            <li><a class="dropdown-item py-2" href="/profile">My Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item py-2 text-primary" href="/logout"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Logout</a></li>
+          </ul>
+        </div>
+      <% } %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <!-- <a class="nav-link logo-text" href="/listings">TravelNest</a> -->
@@ -37,8 +62,9 @@
           <button class="btn btn-primary btn-sm login"> <a class="nav-link" href="/login"><b class="text-white">Login</b></a></button>
 
           <% } %>
-            <% if(currUser){ %>
-              <div class="nav-item dropdown ms-2">
+            <% if(typeof currUser !== 'undefined' && currUser){ %>
+              <!-- Desktop Profile Bubble -->
+              <div class="nav-item dropdown ms-2 d-none d-md-block">
                 <a class="nav-link dropdown-toggle d-flex align-items-center bg-white border rounded-pill py-2 px-3 shadow-sm"
                   href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                   style="text-decoration: none; min-width: 140px;">

@@ -389,6 +389,14 @@ footer {
     .listing-price {
         font-size: 0.8rem;
     }
+
+    /* Show page mobile adjustments */
+    .show-detail-overlay {
+        padding: 2rem 1.25rem 1.25rem 1.25rem;
+    }
+    .show-title {
+        font-size: 1.5rem;
+    }
 }
 
 
@@ -535,4 +543,25 @@ footer {
     .search-btn {
         min-width: 100px;
     }
+
+    .signup, .login {
+        width: 100% !important;
+        margin-top: 0.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar-nav {
+        align-items: flex-start !important;
+    }
+
+    .navbar-toggler {
+        padding: 0.35rem 0.6rem;
+        font-size: 1rem;
+    }
+}
+
+/* Custom Hamburger Icon to X when open */
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z'/%3e%3c/svg%3e");
 }
