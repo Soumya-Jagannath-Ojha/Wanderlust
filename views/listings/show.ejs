@@ -33,7 +33,7 @@
                 <p class="card-text price"> &#8377; <%= listing.price.toLocaleString("en-IN") %>/ night
                 </p>
                 <p class="card-text text-secondary mt-2">
-                    <i class="fa-solid fa-location-dot me-2 text-danger"></i><%= listing.location %>, <%= listing.country %>
+                    <i class="fa-solid fa-location-dot me-2 text-primary"></i><%= listing.location %>, <%= listing.country %>
                 </p>
             </div>
         </div>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-dark">Submit</button>
+                        <button class="btn btn-secondary fw-semibold">Submit</button>
 
                     </form>
                     <% } %>
@@ -106,7 +106,7 @@
                                                 </div>
                                                 <% if(currUser && currUser._id.equals(review.author._id)) { %>
                                                 <form class="mb-0 ms-2" method="POST" action="/listings/<%=listing._id %>/reviews/<%=review._id %>?_method=DELETE">
-                                                    <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                                                    <button class="btn btn-sm btn-outline-primary rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
                                                 </form>
                                                 <% } %>
                                             </div>

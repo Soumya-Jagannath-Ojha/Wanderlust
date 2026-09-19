@@ -32,7 +32,7 @@
                             <% tags.forEach(tag => { %>
                                 <div>
                                     <input type="checkbox" class="btn-check tag-checkbox" name="listing[tag]" id="tag<%= tag %>" value="<%= tag %>" autocomplete="off">
-                                    <label class="btn btn-outline-danger rounded-pill px-3 py-1 fw-semibold" style="font-size: 0.9rem;" for="tag<%= tag %>"><%= tag %></label>
+                                    <label class="btn btn-outline-primary rounded-pill px-3 py-1 fw-semibold" style="font-size: 0.9rem;" for="tag<%= tag %>"><%= tag %></label>
                                 </div>
                             <% }) %>
                         </div>
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="d-grid mt-4">
-                        <button class="btn btn-danger add-btn py-2 fw-semibold rounded-pill shadow-sm">Add New Listing</button>
+                        <button class="btn btn-secondary py-2 fw-semibold rounded-pill shadow-sm">Add New Listing</button>
                     </div>
                 </form>
             </div>

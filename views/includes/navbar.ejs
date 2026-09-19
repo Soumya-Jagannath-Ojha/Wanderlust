@@ -1,18 +1,18 @@
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/listings">
-        <!-- <i class="fa-regular fa-compass"></i> -->
-        <i class="fa-solid fa-route"></i>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link logo-text" href="/listings">TravelNest</a> 
-        </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings">
+      <!-- <i class="fa-regular fa-compass"></i> -->
+      <i class="fa-solid fa-route"></i>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link logo-text" href="/listings">TravelNest</a>
+      </div>
 
-        <!-- <div class="navbar-nav ms-auto">
+      <!-- <div class="navbar-nav ms-auto">
           <form method="POST" action="/listing/search" class="d-flex" role="search">
             <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination" >
               <button class="btn search-btn" type="submit">
@@ -20,45 +20,54 @@
               </button> 
           </form>
         </div> -->
-        <div class="navbar-nav ms-auto">
-          <form method="POST" action="/listing/search" class="d-flex search-box" role="search">
-            <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination" >
-              <button class="btn search-btn" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i>Search
-              </button> 
-          </form>
-        </div>
-
-        <div class="navbar-nav ms-auto">
-          
-          <a class="nav-link" href="/listings/new">TravelNest your home</a>
-          <% if(!currUser){ %>
-            <button type="button" class="btn btn-light btn-sm signup"><a class="nav-link" href="/signup"><b class="text-white">Signup</b></a></button>
-            <!-- <button class="btn btn-dark"><a class="nav-link" href="/signup"><b class="text-white">Signup</b></a></button> -->
-            <button class="btn btn-dark btn-sm login"> <a class="nav-link" href="/login"><b class="text-white">Login</b></a></button>
-          
-          <% } %><% if(currUser){ %>
-            <div class="nav-item dropdown ms-2">
-              <a class="nav-link dropdown-toggle d-flex align-items-center bg-white border rounded-pill py-2 px-3 shadow-sm" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; min-width: 140px;">
-                <div class="rounded-circle me-2 d-flex align-items-center justify-content-center text-white" style="width: 36px; height: 36px; background-color: #a1a1aa;">
-                  <i class="fa-solid fa-user"></i>
-                </div>
-                <div class="d-flex flex-column lh-sm me-3">
-                  <span class="text-dark fw-semibold" style="font-size: 0.95rem; line-height: 1.2;">@<%= currUser.username %></span>
-                  <span class="text-primary" style="font-size: 0.75rem;">Explorer</span>
-                </div>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2 rounded-3" aria-labelledby="profileDropdown" style="min-width: 200px;">
-                <li><a class="dropdown-item py-2" href="/profile">My Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item py-2 text-danger" href="/logout"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Logout</a></li>
-              </ul>
-            </div>
-            <% } %>
-        </div>
+      <div class="navbar-nav ms-auto">
+        <form method="POST" action="/listing/search" class="d-flex search-box" role="search">
+          <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination">
+          <button class="btn search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
       </div>
 
-      <!-- <div class="navbar-nav ms-auto">
+      <div class="navbar-nav ms-auto">
+
+        <a class="nav-link" href="/listings/new">TravelNest your home</a>
+        <% if(!currUser){ %>
+          <button type="button" class="btn btn-light btn-sm signup"><a class="nav-link" href="/signup"><b>Signup</b></a></button>
+            <!-- <button class="btn btn-dark"><a class="nav-link" href="/signup"><b class="text-white">Signup</b></a></button> -->
+          <button class="btn btn-primary btn-sm login"> <a class="nav-link" href="/login"><b class="text-white">Login</b></a></button>
+
+          <% } %>
+            <% if(currUser){ %>
+              <div class="nav-item dropdown ms-2">
+                <a class="nav-link dropdown-toggle d-flex align-items-center bg-white border rounded-pill py-2 px-3 shadow-sm"
+                  href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                  style="text-decoration: none; min-width: 140px;">
+                  <div class="rounded-circle me-2 d-flex align-items-center justify-content-center text-white"
+                    style="width: 36px; height: 36px; background-color: #a1a1aa;">
+                    <i class="fa-solid fa-user"></i>
+                  </div>
+                  <div class="d-flex flex-column lh-sm me-3">
+                    <span class="text-dark fw-semibold" style="font-size: 0.95rem; line-height: 1.2;">@<%=
+                        currUser.username %></span>
+                    <span class="text-primary" style="font-size: 0.75rem;">Explorer</span>
+                  </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2 rounded-3"
+                  aria-labelledby="profileDropdown" style="min-width: 200px;">
+                  <li><a class="dropdown-item py-2" href="/profile">My Profile</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item py-2 text-primary" href="/logout"><i
+                        class="fa-solid fa-arrow-right-from-bracket me-2"></i>Logout</a></li>
+                </ul>
+              </div>
+              <% } %>
+      </div>
+    </div>
+
+    <!-- <div class="navbar-nav ms-auto">
         <form method="POST" action="/listing/search" class="d-flex search-box" role="search">
           <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search Destination" >
             <button class="btn search-btn" type="submit">
@@ -68,12 +77,12 @@
       </div> -->
 
 
-    </div>
-  </nav>
+  </div>
+</nav>
 
 <!-- <style>
   .search-btn{
-    background-color: #fe424d;
+    background-color: #5FB1E9;
     color: #fff;
     border-radius:25px;
     padding: 0 1rem 0 1rem;
@@ -84,7 +93,7 @@
   padding: 0.5rem 1rem; /* Default padding */
   }
   .search-btn:hover{
-    background-color: #fe424d;
+    background-color: #5FB1E9;
     color: #fff;
   }
   .search-btn i{
@@ -130,69 +139,80 @@
 
 
 <style>
-  .search-btn{
-    background-color: #fe424d;
+  .search-btn {
+    background-color: #5FB1E9;
     color: #fff;
-    border-radius:25px;
+    border-radius: 25px;
     padding: 0 1rem 0 1rem;
     display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px; /* Default font size for text */
-  padding: 0.5rem 1rem; /* Default padding */
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    /* Default font size for text */
+    padding: 0.5rem 1rem;
+    /* Default padding */
   }
-  .search-btn:hover{
-    background-color: #fe424d;
+
+  .search-btn:hover {
+    background-color: #5FB1E9;
     color: #fff;
   }
-  .search-btn i{
-    display:inline;
+
+  .search-btn i {
+    display: inline;
     margin-right: 0.5rem;
   }
-  .search-inp{
+
+  .search-inp {
     border-radius: 25px;
     padding: 0.5rem 3rem 0.5rem 3rem;
   }
-  
-  .search-box{
+
+  .search-box {
     display: flex;
     align-items: center;
   }
 
 
 
-  @media (max-width: 768px){
-   
-    nav{
+  @media (max-width: 768px) {
+
+    nav {
       background-color: #fff;
     }
 
-  .navbar-collapse {
-    background-color: white;
-    padding-left: 40px;
+    .navbar-collapse {
+      background-color: white;
+      padding-left: 40px;
+    }
+
+    .search-box {
+      display: flex;
+      /* flex-direction: column; */
+      align-items: stretch;
+      /* gap: 0.5rem; */
+    }
+
+    .search-box .form-control {
+      width: 45%;
+      font-size: 14px;
+    }
+
+    .search-btn {
+      /* width: 25%; */
+      justify-content: center;
+      font-size: 0;
+      padding: 0.5rem;
+    }
+
+    .search-btn i {
+      font-size: 1.2rem;
+    }
+
+    .signup,
+    .login {
+      width: 20%;
+      margin-bottom: 0.5rem;
+    }
   }
-  .search-box{
-    display: flex;
-    /* flex-direction: column; */
-    align-items: stretch;
-    /* gap: 0.5rem; */
-  }
-  .search-box .form-control{
-    width: 45%;
-    font-size: 14px;
-  }
-  .search-btn {
-    /* width: 25%; */
-    justify-content: center;
-    font-size: 0;
-    padding: 0.5rem;
-  }
-  .search-btn i{
-    font-size: 1.2rem;
-  }
-  .signup, .login{
-    width: 20%;
-    margin-bottom: 0.5rem;
-  }
-}
 </style>
