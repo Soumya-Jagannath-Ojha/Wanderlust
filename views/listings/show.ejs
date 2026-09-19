@@ -32,11 +32,8 @@
                 </p>
                 <p class="card-text price"> &#8377; <%= listing.price.toLocaleString("en-IN") %>/ night
                 </p>
-                <p class="card-text">
-                    <%= listing.location %>
-                </p>
-                <p class="card-text">
-                    <%= listing.country %>
+                <p class="card-text text-secondary mt-2">
+                    <i class="fa-solid fa-location-dot me-2 text-danger"></i><%= listing.location %>, <%= listing.country %>
                 </p>
             </div>
         </div>
@@ -79,7 +76,7 @@
                         </div>
                         <div class="mb-3 mt-3">
                             <label for="comment" class="form-label">Comments</label>
-                            <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control"
+                            <textarea name="review[comment]" placeholder="Share your experience....." id="comment" cols="30" rows="5" class="form-control"
                                 required></textarea>
                             <div class="invalid-feedback">
                                 Please add some comments for review
@@ -95,28 +92,36 @@
                             <div class="row">
                                 <p><b>All Reviews</b></p>
                                 <% for(review of listing.reviews){ %>
-                                    <div class="card col-5 ms-3 mb-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">@<%= review.author.username %>
-                                            </h5>
-                                            <p class="starability-result card-text" data-rating="<%=review.rating %>">
-                                            </p>
-                                            <p class="card-text">
+                                    <div class="card col-lg-5 col-md-11 ms-lg-3 mb-4 shadow-sm border-0 rounded-4 d-flex flex-column">
+                                        <div class="card-body p-4 d-flex flex-column">
+                                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white me-3" style="width: 40px; height: 40px; background-color: #a1a1aa; flex-shrink: 0;">
+                                                        <i class="fa-solid fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="card-title fw-bold mb-1" style="font-size: 0.95rem;">@<%= review.author.username %></h6>
+                                                        <p class="starability-result m-0" style="transform: scale(0.65); transform-origin: left;" data-rating="<%=review.rating %>"></p>
+                                                    </div>
+                                                </div>
+                                                <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                                                <form class="mb-0 ms-2" method="POST" action="/listings/<%=listing._id %>/reviews/<%=review._id %>?_method=DELETE">
+                                                    <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                                                </form>
+                                                <% } %>
+                                            </div>
+                                            <p class="card-text text-secondary mb-0" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
                                                 <%=review.comment %>
                                             </p>
-                                            <form class="mb-3" method="POST"
-                                                action="/listings/<%=listing._id %>/reviews/<%=review._id %>?_method=DELETE">
-                                                <button class="btn btn-sm btn-dark">Delete</button>
-                                            </form>
                                         </div>
                                     </div>
                                     <% } %>
                             </div>
                             <% } %>
             </div>
-            <div class="lg-col-6  md-col-5 sm-col-6 sm-offset-1 md-offset-1 lg-offset-2 mb-3">
-                <h2>Where you'll be</h2>
-                <div id="map" class="map"></div>
+            <div class="lg-col-6 md-col-9 sm-col-6 sm-offset-1 md-offset-1 lg-offset-2 mb-5">
+                <h3 class="fw-bold mb-3">Where you'll be</h3>
+                <div id="map" class="map w-100 rounded-4 shadow-sm" style="height: 450px;"></div>
             </div>
     </div>
 

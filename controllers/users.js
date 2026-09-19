@@ -27,6 +27,10 @@ module.exports.renderLoginForm = (req,res)=>{
     res.render("users/login.ejs");
 };
 
+module.exports.renderProfile = (req, res) => {
+    res.render("users/profile.ejs");
+};
+
 module.exports.login = async(req,res) =>{
     req.flash("success","Welcome to TravelNest!");
     let redirectUrl = res.locals.redirectUrl || "/listings";

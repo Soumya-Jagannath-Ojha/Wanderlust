@@ -213,7 +213,8 @@ footer{
 
 /* Show page */
 .show-img{
-    height: 30vh;
+    height: 50vh;
+    min-height: 400px;
 }
 .btns{
     display: flex;
