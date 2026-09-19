@@ -101,39 +101,76 @@ footer{
     align-items: space-evenly;
 }
 
-/* Cards*/
-
-.listing-card{
-    border: none !important;
-    margin-bottom: 2rem;
-
-}
-.card-img-top{
-    border-radius: 1rem !important;
-    width: 100% !important;
-    object-fit: cover !important;
-}
-.card-body{
-    padding: 0 !important;
-
-}
-.card-text p{
-    font-weight: 400;
-}
-.price{
-    font-weight: 700;
-}
-
-.listing-link{
+/* Cards */
+.listing-link {
     text-decoration: none;
+    color: inherit;
 }
-/* Card Effect*/
-.card-img-overlay{
-    opacity: 0;
+
+.listing-card {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card-img-overlay:hover{
-    opacity: 0.2;
-    background-color: white;
+
+.listing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+.listing-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 1.25rem;
+    overflow: hidden;
+}
+
+.listing-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.listing-card:hover .listing-img {
+    transform: scale(1.05);
+}
+
+.listing-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.72) 0%,
+        rgba(0, 0, 0, 0.35) 40%,
+        transparent 70%
+    );
+    display: flex;
+    align-items: flex-end;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+}
+
+.listing-info {
+    color: #fff;
+}
+
+.listing-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+    line-height: 1.3;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.listing-price {
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 
@@ -211,14 +248,30 @@ footer{
 
 
 
+
 /* Show page */
-.show-img{
-    height: 50vh;
-    min-height: 400px;
+.show-detail-card {
+    /* No border or shadow, matching reference image */
+    margin-bottom: 2rem;
 }
+
+.show-detail-img {
+    width: 100%;
+    height: 55vh;
+    min-height: 380px;
+    object-fit: cover;
+    display: block;
+    border-radius: 1rem; /* Rounded corners on image */
+}
+
+.show-detail-body {
+    padding: 1rem 0; /* Align text with image left edge */
+}
+
 .btns{
     display: flex;
 }
+
 
 .signup{
     padding: 5px 15px !important;
