@@ -39,6 +39,19 @@ async function toggleFavorite(element, listingId) {
                 element.classList.remove('favorited');
                 icon.classList.remove('fa-solid');
                 icon.classList.add('fa-regular');
+                
+                // If we are on the favorites page, smoothly remove the card
+                if (window.location.pathname === '/favorites') {
+                    const cardCol = element.closest('.col');
+                    if (cardCol) {
+                        cardCol.style.transition = 'all 0.3s ease';
+                        cardCol.style.opacity = '0';
+                        cardCol.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            cardCol.remove();
+                        }, 300);
+                    }
+                }
             }
         } else {
             if (response.status === 401) {
@@ -72,6 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Show loader on link clicks (except for new tabs or in-page anchors)
         document.addEventListener("click", (e) => {
+            // Ignore favorite button clicks (they use AJAX and shouldn't trigger the page loader)
+            if (e.target.closest(".favorite-btn")) {
+                return;
+            }
+
             const link = e.target.closest("a");
             
             if (
@@ -84,10 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 !link.href.includes("#") &&
                 link.hostname === window.location.hostname
             ) {
-                // Ignore favorite button clicks which use AJAX
-                if (!link.classList.contains("favorite-btn") && !link.closest(".favorite-btn")) {
-                    loader.classList.add("active");
-                }
+                loader.classList.add("active");
             }
         });
 

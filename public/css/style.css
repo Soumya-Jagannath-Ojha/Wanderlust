@@ -508,6 +508,10 @@ footer {
     border-color: #FFB600 !important;
     color: #222 !important;
 }
+.logout {
+    color: #FFB600 !important;
+    background-color: transparent !important;
+}
 
 .edit-btn {
     background-color: #FFB600 !important;
@@ -665,5 +669,21 @@ footer {
         transform: translateY(-15px);
         opacity: 1;
         background-color: #ff385c; /* Accent color peak */
+    }
+}
+
+/* Smooth UI fade-in after load */
+body > .container {
+    animation: smoothFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes smoothFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

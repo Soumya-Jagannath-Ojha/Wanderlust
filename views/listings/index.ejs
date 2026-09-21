@@ -2,18 +2,19 @@
 
     <!-- Tags / Filter section -->
     <div id="filters">
-        <% const tags=[ { name: "Trending" , icon: "fa-fire" }, { name: "Surfing" , icon: "fa-water" }, {
+        <% const tags=[ { name: "All", icon: "fa-border-all" }, { name: "Trending" , icon: "fa-fire" }, { name: "Surfing" , icon: "fa-water" }, {
             name: "Amazing cities" , icon: "fa-city" }, { name: "Beach" , icon: "fa-umbrella" }, { name: "Farms" ,
             icon: "fa-cow" }, { name: "Lake" , icon: "fa-mountain" }, { name: "Castles" ,
             icon: "fa-brands fa-fort-awesome" }, { name: "Rooms" , icon: "fa-bed" }, { name: "Forest" , icon: "fa-tree"
             }, { name: "Pool" , icon: "fa-person-swimming" } ]; %>
 
         <div class="filters-wrapper" id="filtersWrapper">
-            <% tags.forEach(tag=> { %>
-                <div class="filter">
-                    <a style="text-decoration: none;" href="/listings?tag=<%= tag.name %>" class="filter-link">
-                        <div><i class="fa-solid <%= tag.icon %>"></i></div>
-                        <p><%= tag.name %></p>
+            <% tags.forEach(t=> { %>
+                <% const isActive = (t.name === "All" && !tag) || (t.name === tag); %>
+                <div class="filter <%= isActive ? 'active' : '' %>" style="<%= isActive ? 'opacity: 1; border-bottom: 2px solid black;' : 'opacity: 0.6;' %>">
+                    <a style="text-decoration: none; color: inherit;" href="<%= t.name === 'All' ? '/listings' : '/listings?tag=' + t.name %>" class="filter-link">
+                        <div><i class="fa-solid <%= t.icon %>"></i></div>
+                        <p><%= t.name %></p>
                     </a>
                 </div>
             <% }) %>
