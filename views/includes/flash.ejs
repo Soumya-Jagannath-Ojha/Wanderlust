@@ -1,17 +1,41 @@
 <% if(success && success.length){ %>
-    <div class="alert 
-    alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-        <%= success %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" 
-        aria-label="close" ></button>
-    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Toastify({
+                text: <%- JSON.stringify(success.toString()) %>,
+                duration: 3000,
+                close: true,
+                gravity: "top", 
+                position: "center", 
+                stopOnFocus: true, 
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    borderRadius: "10px",
+                    fontWeight: "500",
+                    padding: "12px 24px"
+                },
+            }).showToast();
+        });
+    </script>
 <% } %>
 
 <% if(error && error.length){ %>
-    <div class="alert 
-    alert-danger alert-dismissible fade show col-6 offset-3 mt-2" role="alert">
-        <%= error %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" 
-        aria-label="close" ></button>
-    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Toastify({
+                text: <%- JSON.stringify(error.toString()) %>,
+                duration: 3000,
+                close: true,
+                gravity: "top", 
+                position: "center", 
+                stopOnFocus: true, 
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    borderRadius: "10px",
+                    fontWeight: "500",
+                    padding: "12px 24px"
+                },
+            }).showToast();
+        });
+    </script>
 <% } %>
