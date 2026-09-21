@@ -21,6 +21,18 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
+    <!-- Global Page Transition Loader -->
+    <div id="global-loader" class="global-loader">
+        <div class="loader-content">
+            <div class="jumping-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <p class="loader-text mt-3 fw-semibold text-secondary">Loading your adventure...</p>
+        </div>
+    </div>
+
     <div class="container">
         <%- include("../includes/flash.ejs") %>
         <%- body %>

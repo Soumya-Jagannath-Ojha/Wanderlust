@@ -600,3 +600,70 @@ footer {
 .favorite-btn.favorited i {
     color: #ff385c;
 }
+
+/* Global Page Transition Loader */
+.global-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* When the loader is active */
+.global-loader.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Aesthetic Jumping Dots Animation */
+.jumping-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.jumping-dots .dot {
+    width: 14px;
+    height: 14px;
+    background-color: #5FB1E9; /* Brand blue */
+    border-radius: 50%;
+    animation: jump 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.jumping-dots .dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.jumping-dots .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.jumping-dots .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes jump {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-15px);
+        opacity: 1;
+        background-color: #ff385c; /* Accent color peak */
+    }
+}

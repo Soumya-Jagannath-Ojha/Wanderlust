@@ -58,4 +58,46 @@ async function toggleFavorite(element, listingId) {
     } catch (err) {
         console.error("Error:", err);
     }
-} 
+}
+
+// Global Page Transition Logic
+document.addEventListener("DOMContentLoaded", () => {
+    const loader = document.getElementById("global-loader");
+    
+    if (loader) {
+        // Hide loader when page is fully loaded or restored from bfcache
+        window.addEventListener("pageshow", (e) => {
+            loader.classList.remove("active");
+        });
+
+        // Show loader on link clicks (except for new tabs or in-page anchors)
+        document.addEventListener("click", (e) => {
+            const link = e.target.closest("a");
+            
+            if (
+                link && 
+                link.href && 
+                !link.target && 
+                !link.hasAttribute("download") &&
+                !link.href.startsWith("javascript:") &&
+                !link.href.startsWith("mailto:") &&
+                !link.href.includes("#") &&
+                link.hostname === window.location.hostname
+            ) {
+                // Ignore favorite button clicks which use AJAX
+                if (!link.classList.contains("favorite-btn") && !link.closest(".favorite-btn")) {
+                    loader.classList.add("active");
+                }
+            }
+        });
+
+        // Show loader on standard form submissions
+        document.addEventListener("submit", (e) => {
+            const form = e.target;
+            // Only trigger if it's not a background fetch/AJAX form (most forms here are standard)
+            if (!form.hasAttribute("data-no-loader")) {
+                loader.classList.add("active");
+            }
+        });
+    }
+});
