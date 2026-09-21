@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+const User = require("../models/user");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -147,5 +148,36 @@ module.exports.search = async (req, res) => {
         console.error("Error fetching listings:", err);
         req.flash("error", "Error fetching listings");
         return res.redirect("/");  // Redirect to the homepage on error
+    }
+};
+
+module.exports.toggleFavorite = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = req.user; // from passport
+        
+        if (!user) {
+            return res.status(401).json({ error: "You must be logged in." });
+        }
+
+        const listing = await Listing.findById(id);
+        if (!listing) {
+            return res.status(404).json({ error: "Listing not found." });
+        }
+
+        const isFavorited = user.favorites.includes(id);
+
+        if (isFavorited) {
+            // Remove from favorites
+            await User.findByIdAndUpdate(user._id, { $pull: { favorites: id } });
+            return res.json({ favorited: false });
+        } else {
+            // Add to favorites
+            await User.findByIdAndUpdate(user._id, { $addToSet: { favorites: id } });
+            return res.json({ favorited: true });
+        }
+    } catch (err) {
+        console.error("Error toggling favorite:", err);
+        res.status(500).json({ error: "Server error" });
     }
 };

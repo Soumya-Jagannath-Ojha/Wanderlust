@@ -43,5 +43,7 @@ router.get("/:id/edit",
     wrapAsync(listingController.renderEditForm)
 );
 
+//Favorite Route
+router.post("/:id/favorite", wrapAsync(listingController.toggleFavorite));
 
 module.exports = router;

@@ -1,0 +1,42 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4 mb-5">
+    <h2 class="fw-bold mb-4">My Favorites</h2>
+
+    <% if (favorites.length === 0) { %>
+        <div class="text-center text-muted mt-5">
+            <i class="fa-regular fa-heart fs-1 mb-3"></i>
+            <h5>You haven't added any favorites yet!</h5>
+            <p>Start exploring and save your favorite places.</p>
+            <a href="/listings" class="btn btn-primary mt-2">Explore Listings</a>
+        </div>
+    <% } else { %>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mx-2 mx-md-0 g-4">
+            <% for(let listing of favorites) { %>
+                <div class="col">
+                    <a href="/listings/<%= listing._id %>" class="listing-link">
+                        <div class="listing-card">
+                            <div class="listing-img-wrap">
+                                <img src="<%= listing.image.url %>" class="listing-img" alt="listing_img">
+                                
+                                <% if (currUser) { %>
+                                    <% const isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString()); %>
+                                    <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); toggleFavorite(this, '<%= listing._id %>')">
+                                        <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                                    </div>
+                                <% } %>
+
+                                <div class="listing-overlay">
+                                    <div class="listing-info">
+                                        <p class="listing-title"><%= listing.title %></p>
+                                        <p class="listing-price">&#8377;<%= listing.price.toLocaleString("en-In") %> / night</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
+</div>

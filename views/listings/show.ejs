@@ -13,8 +13,15 @@
     <div class="container py-4" style="max-width: 900px;">
 
         <!-- Main immersive image card -->
-        <div class="show-detail-card mb-4">
+        <div class="show-detail-card mb-4 position-relative">
             <img src="<%= listing.image.url %>" class="show-detail-img" alt="listing_image">
+            
+            <% if (currUser) { %>
+                <% const isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString()); %>
+                <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); toggleFavorite(this, '<%= listing._id %>')">
+                    <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                </div>
+            <% } %>
             <div class="show-detail-overlay">
                 <h1 class="fw-bold text-white mb-1 show-title fs-5"><%= listing.title %></h1>
                 <p class="text-white opacity-75 mb-3" style="font-size: 0.95rem;">Owned by @<%= listing.owner.username %></p>
@@ -86,9 +93,13 @@
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex align-items-start justify-content-between mb-3">
                             <div class="d-flex align-items-start">
-                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white me-3" style="width: 40px; height: 40px; background-color: #a1a1aa; flex-shrink: 0;">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
+                                <% if(review.author.profilePhoto && review.author.profilePhoto.url) { %>
+                                    <img src="<%= review.author.profilePhoto.url.replace('/upload', '/upload/w_100,h_100,c_fill') %>" class="rounded-circle me-3 object-fit-cover" style="width: 40px; height: 40px; flex-shrink: 0;" alt="Reviewer">
+                                <% } else { %>
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white me-3" style="width: 40px; height: 40px; background-color: #a1a1aa; flex-shrink: 0;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                <% } %>
                                 <div>
                                     <h6 class="card-title fw-bold mb-1" style="font-size: 0.95rem;">@<%= review.author.username %></h6>
                                     <p class="starability-result m-0" style="transform: scale(0.65); transform-origin: left;" data-rating="<%= review.rating %>"></p>
@@ -96,7 +107,7 @@
                             </div>
                             <% if(currUser && currUser._id.equals(review.author._id)) { %>
                             <form class="mb-0 ms-2" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                <button class="btn btn-sm btn-outline-primary rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                                <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
                             </form>
                             <% } %>
                         </div>

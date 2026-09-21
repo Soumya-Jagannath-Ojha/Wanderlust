@@ -9,7 +9,13 @@
                     <p class="text-muted">Join TravelNest today</p>
                 </div>
                 
-                <form action="/signup" method="POST" class="needs-validation" novalidate>
+                <form action="/signup" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    
+                    <div class="mb-4">
+                        <label for="profilePhoto" class="form-label fw-semibold">Profile Photo (Optional)</label>
+                        <input name="profilePhoto" id="profilePhoto" type="file" class="form-control" accept="image/*"/>
+                    </div>
+
                     <div class="mb-4">
                         <label for="username" class="form-label fw-semibold">Username</label>
                         <input name="username" id="username" placeholder="Enter username" type="text" class="form-control" required autofocus/>

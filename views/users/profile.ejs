@@ -4,14 +4,22 @@
     <div class="col-md-8 offset-md-2 col-xl-6 offset-xl-3">
         <div class="card shadow-lg border-0 rounded-4">
             <div class="card-body p-5 text-center">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-dark mb-4 bg-secondary" style="width: 100px; height: 100px;">
-                    <i class="fa-solid fa-user fa-3x"></i>
-                </div>
-                <h2 class="fw-bold mb-1">@<%= currUser.username %></h2>
-                <p class="text-muted mb-4">Explorer</p>
+                <% if(currUser.profilePhoto && currUser.profilePhoto.url) { %>
+                    <img src="<%= currUser.profilePhoto.url.replace('/upload', '/upload/w_200,h_200,c_fill') %>" alt="Profile" class="rounded-circle mb-4 object-fit-cover shadow-sm" style="width: 120px; height: 120px; border: 3px solid white;">
+                <% } else { %>
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-dark mb-4 bg-secondary shadow-sm" style="width: 120px; height: 120px; border: 3px solid white;">
+                        <i class="fa-solid fa-user fa-3x"></i>
+                    </div>
+                <% } %>
                 
-                <div class="text-start bg-light p-4 rounded-4 mb-4">
-                    <h5 class="fw-semibold border-bottom pb-3 mb-3 text-secondary">Profile Details</h5>
+                <h2 class="fw-bold mb-1">@<%= currUser.username %></h2>
+                <p class="text-muted mb-4"><span class="badge bg-primary px-3 py-2 rounded-pill"><%= currUser.role.charAt(0).toUpperCase() + currUser.role.slice(1) %></span></p>
+                
+                <div id="profile-view" class="text-start bg-light p-4 rounded-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <h5 class="fw-semibold text-secondary m-0">Profile Details</h5>
+                        <button type="button" id="edit-btn" class="btn btn-sm btn-outline-primary fw-semibold rounded-3 px-3 shadow-sm"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</button>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-sm-4 text-muted fw-semibold">Username</div>
                         <div class="col-sm-8 fw-bold">@<%= currUser.username %></div>
@@ -20,12 +28,63 @@
                         <div class="col-sm-4 text-muted fw-semibold">Email</div>
                         <div class="col-sm-8 fw-bold"><%= currUser.email %></div>
                     </div>
+                    
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="/listings" class="btn btn-outline-secondary rounded-3 px-4 shadow-sm fw-semibold">Back to Listings</a>
+                    </div>
                 </div>
-                
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="/listings" class="btn btn-outline-secondary rounded-3 px-4 shadow-sm fw-semibold">Back to Listings</a>
-                </div>
+
+                <form id="edit-form" action="/profile?_method=PUT" method="POST" enctype="multipart/form-data" class="text-start bg-light p-4 rounded-4 mb-4 needs-validation d-none" novalidate>
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <h5 class="fw-semibold text-secondary m-0">Edit Profile</h5>
+                        <button type="button" id="cancel-edit-btn" class="btn btn-sm btn-outline-secondary fw-semibold rounded-3 px-3 shadow-sm">Cancel</button>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="profilePhoto" class="form-label fw-semibold text-muted">Change Profile Photo</label>
+                        <input name="profilePhoto" id="profilePhoto" type="file" class="form-control" accept="image/*"/>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold text-muted">Username</label>
+                        <input name="username" id="username" type="text" class="form-control" value="<%= currUser.username %>" required />
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-semibold text-muted">Email</label>
+                        <input name="email" id="email" type="email" class="form-control" value="<%= currUser.email %>" required />
+                    </div>
+                    
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" id="save-changes-btn" class="btn btn-primary rounded-3 px-4 shadow-sm fw-semibold">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const profileView = document.getElementById('profile-view');
+    const editForm = document.getElementById('edit-form');
+    const editBtn = document.getElementById('edit-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    const saveChangesBtn = document.getElementById('save-changes-btn');
+
+    editBtn.addEventListener('click', () => {
+        profileView.classList.add('d-none');
+        editForm.classList.remove('d-none');
+    });
+
+    cancelEditBtn.addEventListener('click', () => {
+        editForm.classList.add('d-none');
+        profileView.classList.remove('d-none');
+    });
+
+    editForm.addEventListener('submit', (e) => {
+        if (editForm.checkValidity()) {
+            saveChangesBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saving...';
+            saveChangesBtn.disabled = true;
+        }
+    });
+</script>

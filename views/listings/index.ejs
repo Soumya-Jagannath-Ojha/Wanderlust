@@ -28,6 +28,14 @@
                     <div class="listing-card">
                         <div class="listing-img-wrap">
                             <img src="<%= listing.image.url %>" class="listing-img" alt="listing_img">
+                            
+                            <% if (currUser) { %>
+                                <% const isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString()); %>
+                                <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); toggleFavorite(this, '<%= listing._id %>')">
+                                    <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                                </div>
+                            <% } %>
+
                             <div class="listing-overlay">
                                 <div class="listing-info">
                                     <p class="listing-title"><%= listing.title %></p>
