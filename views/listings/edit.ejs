@@ -27,10 +27,18 @@
             <input name="listing[image]" type="file" class="form-control" />
         </div>
         
-        <div class="mb-3">
-            <label for="price" class="form-label">Price</label>
-            <input name="listing[price]" value="<%= listing.price %>" type="text" class="form-control" required/>
-            <div class="invalid-feedback">Price should be valid</div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label for="price" class="form-label">Price</label>
+                <input name="listing[price]" value="<%= listing.price %>" type="text" class="form-control" required/>
+                <div class="invalid-feedback">Price should be valid</div>
+            </div>
+            
+            <div class="mb-3 col-md-6">
+                <label for="maxGuests" class="form-label">Max Guests</label>
+                <input name="listing[maxGuests]" value="<%= listing.maxGuests || 1 %>" type="number" min="1" class="form-control" required/>
+                <div class="invalid-feedback">Capacity should be valid</div>
+            </div>
         </div>
         
         <div class="mb-3">

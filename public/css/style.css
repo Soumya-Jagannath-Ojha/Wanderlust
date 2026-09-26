@@ -438,68 +438,69 @@ footer {
 
 /* Theme Colors Overrides */
 :root {
-    --bs-primary: #5FB1E9;
-    --bs-secondary: #FFB600;
+    --bs-primary: #FFB600;
+    --bs-secondary: #5FB1E9;
 }
 
 .text-primary {
-    color: #5FB1E9 !important;
-}
-
-.bg-primary {
-    background-color: #5FB1E9 !important;
-}
-
-.btn-primary {
-    background-color: #5FB1E9 !important;
-    border-color: #5FB1E9 !important;
-    color: #fff !important;
-}
-
-.btn-primary:hover {
-    background-color: #4d9ed3 !important;
-    border-color: #4d9ed3 !important;
-    color: #fff !important;
-}
-
-.btn-outline-primary {
-    color: #2b7fb3 !important;
-    border-color: #5FB1E9 !important;
-}
-
-.btn-outline-primary:hover {
-    background-color: #5FB1E9 !important;
-    color: #fff !important;
-}
-
-.text-secondary {
     color: #FFB600 !important;
 }
 
-.bg-secondary {
+.bg-primary {
     background-color: #FFB600 !important;
 }
 
-.btn-secondary {
+.btn-primary {
     background-color: #FFB600 !important;
     border-color: #FFB600 !important;
     color: #222 !important;
 }
 
-.btn-secondary:hover {
+.btn-primary:hover {
     background-color: #e6a400 !important;
     border-color: #e6a400 !important;
     color: #222 !important;
 }
 
-.btn-outline-secondary {
+.btn-outline-primary {
     color: #cc9200 !important;
     border-color: #FFB600 !important;
 }
 
-.btn-outline-secondary:hover {
+.btn-outline-primary:hover,
+.btn-check:checked + .btn-outline-primary {
     background-color: #FFB600 !important;
     color: #222 !important;
+}
+
+.text-secondary {
+    color: #5FB1E9 !important;
+}
+
+.bg-secondary {
+    background-color: #5FB1E9 !important;
+}
+
+.btn-secondary {
+    background-color: #5FB1E9 !important;
+    border-color: #5FB1E9 !important;
+    color: #fff !important;
+}
+
+.btn-secondary:hover {
+    background-color: #4d9ed3 !important;
+    border-color: #4d9ed3 !important;
+    color: #fff !important;
+}
+
+.btn-outline-secondary {
+    color: #2b7fb3 !important;
+    border-color: #5FB1E9 !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #5FB1E9 !important;
+    color: #fff !important;
 }
 
 /* Button overrides for add/edit */

@@ -13,6 +13,7 @@ module.exports.listingSchema = Joi.object({
         Joi.string() // Single string
     ).required(),
     price: Joi.number().required().min(0),
+    maxGuests: Joi.number().required().min(1),
     image: Joi.string().allow("", null),
   }).required(),
 });

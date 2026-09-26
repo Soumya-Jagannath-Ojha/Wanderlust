@@ -48,7 +48,12 @@
                                 <div class="invalid-feedback">Price should be valid</div>
                             </div>
                         </div>
-                        <div class="mb-4 col-md-8">
+                        <div class="mb-4 col-md-4">
+                            <label for="maxGuests" class="form-label fw-semibold">Max Guests</label>
+                            <input name="listing[maxGuests]" placeholder="Max Capacity" type="number" min="1" class="form-control shadow-sm rounded-3 py-2" required>
+                            <div class="invalid-feedback">Capacity should be valid</div>
+                        </div>
+                        <div class="mb-4 col-md-4">
                             <label for="country" class="form-label fw-semibold">Country</label>
                             <input name="listing[country]" placeholder="India" type="text" class="form-control rounded-3 py-2" required>
                             <div class="invalid-feedback">Country should be valid</div>

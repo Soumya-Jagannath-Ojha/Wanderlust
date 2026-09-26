@@ -24,6 +24,9 @@ router
 //NEW Route
 router.get("/new",isLoggedIn, listingController.renderNewForm);
 
+// Book Route
+router.get("/:id/book", wrapAsync(listingController.renderBook));
+
 //Show Route & Update Route & Delete
 router
     .route("/:id")

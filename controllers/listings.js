@@ -13,6 +13,17 @@ module.exports.renderNewForm = (req,res) =>{
     res.render("listings/new.ejs");
 };
 
+module.exports.renderBook = async (req, res) => {
+    let { id } = req.params;
+    const listing = await Listing.findById(id);
+    if (!listing) {
+        req.flash("error", "Listing you requested for does not exist!");
+        return res.redirect("/listings");
+    }
+    const { checkin, checkout, adults, children, infants } = req.query;
+    res.render("listings/book.ejs", { listing, checkin, checkout, adults, children, infants });
+};
+
 module.exports.showListing = async (req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id)
@@ -49,7 +60,7 @@ module.exports.createListing = async(req,res,next) =>{
     tag = Array.isArray(tag) ? tag : [tag];
     // newListing.tag = Array.isArray(req.body.listing.tag) ? req.body.listing.tag : [req.body.listing.tag];
     let savedListing = await newListing.save();
-    console.log(savedListing);
+    // console.log(savedListing);
     req.flash("success","New Listing Created !");
     res.redirect("/listings");
 };

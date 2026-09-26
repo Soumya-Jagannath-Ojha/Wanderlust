@@ -10,25 +10,24 @@
         }
     </style>
 
-    <div class="container py-4" style="max-width: 900px;">
+    <div class="container py-4" style="max-width: 1120px;">
 
         <!-- Main immersive image card -->
         <div class="show-detail-card mb-4 position-relative">
             <img src="<%= listing.image.url %>" class="show-detail-img" alt="listing_image">
             
-            <% if (currUser) { %>
-                <% const isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString()); %>
-                <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); toggleFavorite(this, '<%= listing._id %>')">
-                    <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
-                </div>
-            <% } %>
+            <% 
+                let isFav = false;
+                if (currUser) {
+                    isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString());
+                }
+            %>
+            <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); <% if (currUser) { %>toggleFavorite(this, '<%= listing._id %>')<% } else { %>showLoginPrompt()<% } %>">
+                <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+            </div>
             <div class="show-detail-overlay">
                 <h1 class="fw-bold text-white mb-1 show-title fs-5"><%= listing.title %></h1>
-                <p class="text-white opacity-75 mb-3" style="font-size: 0.95rem;">Owned by @<%= listing.owner.username %></p>
-                
-                <p class="text-white mb-4" style="font-size: 0.95rem; opacity: 0.9; max-width: 700px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                    <%= listing.description %>
-                </p>
+                <p class="text-white opacity-75 mb-4" style="font-size: 0.95rem;">Owned by @<%= listing.owner.username %></p>
                 
                 <div class="d-flex flex-wrap align-items-center text-white gap-3 gap-md-4">
                     <div class="d-flex align-items-center">
@@ -43,90 +42,354 @@
             </div>
         </div>
 
-        <!-- Edit / Delete buttons (owner only) -->
-        <% if(currUser && listing.owner._id.equals(currUser._id)){ %>
-        <div class="d-flex gap-2 mb-4">
-            <a href="/listings/<%= listing._id %>/edit" class="btn btn-sm btn-outline-secondary fw-semibold rounded-pill px-4">Edit</a>
-            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-                <button class="btn btn-sm btn-outline-danger fw-semibold rounded-pill px-4">Delete</button>
-            </form>
-        </div>
-        <% } %>
+        <div class="row mt-4">
+            <div class="col-lg-8 col-md-12 pe-lg-5">
+                <!-- Description Section -->
+                <div class="mb-4">
+                    <h4 class="fw-bold mb-3">About this space</h4>
+                    <p class="text-dark" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                        <%= listing.description %>
+                    </p>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#descriptionModal" class="fw-bold text-dark text-decoration-underline" style="font-size: 0.95rem;">Show more <i class="fa-solid fa-angle-right ms-1"></i></a>
+                </div>
+                
 
-        <!-- Leave a Review -->
-        <% if(currUser){ %>
-        <hr />
-        <h4 class="fw-bold mb-3">Leave a Review</h4>
-        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation mb-4">
-            <div class="mb-3">
-                <label for="rating" class="form-label fw-semibold">Rating</label>
-                <fieldset class="starability-slot">
-                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                    <label for="first-rate1" title="Terrible">1 star</label>
-                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                    <label for="first-rate2" title="Not good">2 stars</label>
-                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                    <label for="first-rate3" title="Average">3 stars</label>
-                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                    <label for="first-rate4" title="Very good">4 stars</label>
-                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                    <label for="first-rate5" title="Amazing">5 stars</label>
-                </fieldset>
-            </div>
-            <div class="mb-3">
-                <label for="comment" class="form-label fw-semibold">Comments</label>
-                <textarea name="review[comment]" placeholder="Share your experience....." id="comment" cols="30" rows="5" class="form-control" required></textarea>
-                <div class="invalid-feedback">Please add some comments for review</div>
-            </div>
-            <button class="btn btn-secondary fw-semibold rounded-pill px-4">Submit</button>
-        </form>
-        <% } %>
 
-        <!-- All Reviews -->
-        <% if(listing.reviews.length > 0){ %>
-        <p class="fw-bold mb-3">All Reviews</p>
-        <div class="row g-3 mb-4">
-            <% for(review of listing.reviews){ %>
-            <div class="col-lg-6 col-md-12">
-                <div class="card shadow-sm border-0 rounded-4 h-100">
-                    <div class="card-body p-4 d-flex flex-column">
-                        <div class="d-flex align-items-start justify-content-between mb-3">
-                            <div class="d-flex align-items-start">
-                                <% if(review.author.profilePhoto && review.author.profilePhoto.url) { %>
-                                    <img src="<%= review.author.profilePhoto.url.replace('/upload', '/upload/w_100,h_100,c_fill') %>" class="rounded-circle me-3 object-fit-cover" style="width: 40px; height: 40px; flex-shrink: 0;" alt="Reviewer">
-                                <% } else { %>
-                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white me-3" style="width: 40px; height: 40px; background-color: #a1a1aa; flex-shrink: 0;">
-                                        <i class="fa-solid fa-user"></i>
+                <hr class="my-4" />
+
+                <!-- Edit / Delete buttons (owner only) -->
+                <% if(currUser && listing.owner._id.equals(currUser._id)){ %>
+                <div class="d-flex gap-2 mb-4">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-sm btn-outline-secondary fw-semibold rounded-pill px-4">Edit</a>
+                    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                        <button class="btn btn-sm btn-outline-danger fw-semibold rounded-pill px-4">Delete</button>
+                    </form>
+                </div>
+                <% } %>
+
+                <!-- Leave a Review -->
+                <% if(currUser){ %>
+                <hr />
+                <h4 class="fw-bold mb-3">Leave a Review</h4>
+                <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation mb-4">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label fw-semibold">Rating</label>
+                        <fieldset class="starability-slot">
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label fw-semibold">Comments</label>
+                        <textarea name="review[comment]" placeholder="Share your experience....." id="comment" cols="30" rows="5" class="form-control" required></textarea>
+                        <div class="invalid-feedback">Please add some comments for review</div>
+                    </div>
+                    <button class="btn btn-secondary fw-semibold rounded-pill px-4">Submit</button>
+                </form>
+                <% } %>
+
+                <!-- All Reviews -->
+                <% if(listing.reviews.length > 0){ %>
+                <p class="fw-bold mb-3 mt-4">All Reviews</p>
+                <div class="row g-3 mb-4">
+                    <% for(review of listing.reviews){ %>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card shadow-sm border-0 rounded-4 h-100">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <% if(review.author.profilePhoto && review.author.profilePhoto.url) { %>
+                                            <img src="<%= review.author.profilePhoto.url.replace('/upload', '/upload/w_100,h_100,c_fill') %>" class="rounded-circle me-3 object-fit-cover" style="width: 40px; height: 40px; flex-shrink: 0;" alt="Reviewer">
+                                        <% } else { %>
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white me-3" style="width: 40px; height: 40px; background-color: #a1a1aa; flex-shrink: 0;">
+                                                <i class="fa-solid fa-user"></i>
+                                            </div>
+                                        <% } %>
+                                        <div>
+                                            <h6 class="card-title fw-bold mb-1" style="font-size: 0.95rem;">@<%= review.author.username %></h6>
+                                            <p class="starability-result m-0" style="transform: scale(0.65); transform-origin: left;" data-rating="<%= review.rating %>"></p>
+                                        </div>
                                     </div>
-                                <% } %>
-                                <div>
-                                    <h6 class="card-title fw-bold mb-1" style="font-size: 0.95rem;">@<%= review.author.username %></h6>
-                                    <p class="starability-result m-0" style="transform: scale(0.65); transform-origin: left;" data-rating="<%= review.rating %>"></p>
+                                    <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                                    <form class="mb-0 ms-2" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                                        <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                                    </form>
+                                    <% } %>
+                                </div>
+                                <p class="card-text text-secondary mb-0" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                                    <%= review.comment %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>v 
+                </div>
+                <% } %>
+
+                <hr class="my-4" />
+
+                <!-- Map -->
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-3">Where you'll be</h4>
+                    <p class="text-secondary mb-3"><i class="fa-solid fa-location-dot me-2"></i><%= listing.location %>, <%= listing.country %></p>
+                    <div id="map" class="w-100 rounded-4 shadow-sm" style="height: 400px; z-index: 1;"></div>
+                </div>
+            </div>
+
+            <!-- Reservation Card Column -->
+            <div class="col-lg-4 col-md-12 mt-4 mt-lg-0">
+                <div class="card border border-light-subtle shadow-lg rounded-4 p-4 sticky-top bg-white" style="top: 100px; z-index: 10;">
+                    <div class="d-flex justify-content-between align-items-baseline mb-4">
+                        <h4 class="mb-0 fw-bold fs-4">&#8377;<%= listing.price.toLocaleString("en-IN") %> <span class="fs-6 fw-normal text-secondary">/ night</span></h4>
+                    </div>
+                    
+                    <div class="border border-secondary-subtle rounded-3 mb-3">
+                        <div class="d-flex border-bottom border-secondary-subtle">
+                            <div class="p-2 border-end border-secondary-subtle w-50 position-relative">
+                                <label class="form-label mb-0 text-dark" style="font-size: 0.65rem; font-weight: 800;">CHECK-IN</label>
+                                <input type="date" id="checkin" class="form-control border-0 p-0 shadow-none bg-transparent" style="font-size: 0.9rem; cursor: pointer;">
+                            </div>
+                            <div class="p-2 w-50 position-relative">
+                                <label class="form-label mb-0 text-dark" style="font-size: 0.65rem; font-weight: 800;">CHECKOUT</label>
+                                <input type="date" id="checkout" class="form-control border-0 p-0 shadow-none bg-transparent" style="font-size: 0.9rem; cursor: pointer;">
+                            </div>
+                        </div>
+                        <div class="p-2 position-relative dropdown">
+                            <button type="button" class="btn btn-link text-decoration-none text-dark w-100 h-100 p-0 text-start shadow-none" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" style="border: none; background: transparent;">
+                                <label class="form-label mb-0 text-dark w-100" style="font-size: 0.65rem; font-weight: 800; cursor: pointer;">GUESTS</label>
+                                <div class="d-flex justify-content-between align-items-center w-100">
+                                    <span id="guestCountText" style="font-size: 0.9rem;">1 guest</span>
+                                    <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>
+                                </div>
+                            </button>
+                            
+                            <div class="dropdown-menu dropdown-menu-end p-4 shadow-lg border-0 rounded-4 mt-2" style="width: 320px;" onclick="event.stopPropagation()">
+                                <!-- Adults -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Adults</h6>
+                                        <small class="text-secondary">Age 13+</small>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <button type="button" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 32px; height: 32px;" onclick="updateGuests('adults', -1)" id="btn-adults-minus" disabled>
+                                            <i class="fa-solid fa-minus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                        <span id="adults-count" class="fw-semibold" style="width: 15px; text-align: center;">1</span>
+                                        <button type="button" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 32px; height: 32px;" onclick="updateGuests('adults', 1)" id="btn-adults-plus">
+                                            <i class="fa-solid fa-plus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr class="my-3 border-light-subtle">
+                                <!-- Children -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Children</h6>
+                                        <small class="text-secondary">Ages 2-12</small>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <button type="button" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 32px; height: 32px;" onclick="updateGuests('children', -1)" id="btn-children-minus" disabled>
+                                            <i class="fa-solid fa-minus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                        <span id="children-count" class="fw-semibold" style="width: 15px; text-align: center;">0</span>
+                                        <button type="button" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 32px; height: 32px;" onclick="updateGuests('children', 1)" id="btn-children-plus">
+                                            <i class="fa-solid fa-plus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr class="my-3 border-light-subtle">
+                                <!-- Infants -->
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Infants</h6>
+                                        <small class="text-secondary">Under 2</small>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <button type="button" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 32px; height: 32px;" onclick="updateGuests('infants', -1)" id="btn-infants-minus" disabled>
+                                            <i class="fa-solid fa-minus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                        <span id="infants-count" class="fw-semibold" style="width: 15px; text-align: center;">0</span>
+                                        <button type="button" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 32px; height: 32px;" onclick="updateGuests('infants', 1)" id="btn-infants-plus">
+                                            <i class="fa-solid fa-plus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-secondary" style="font-size: 0.8rem; line-height: 1.4;">
+                                    This place has a maximum of <%= listing.maxGuests || 1 %> guests, not including infants.
                                 </div>
                             </div>
-                            <% if(currUser && currUser._id.equals(review.author._id)) { %>
-                            <form class="mb-0 ms-2" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
-                            </form>
-                            <% } %>
+                            <input type="hidden" id="guests" value="1">
                         </div>
-                        <p class="card-text text-secondary mb-0" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                            <%= review.comment %>
-                        </p>
+                    </div>
+                    
+                    <button id="reserveBtn" class="btn btn-primary w-100 fw-bold py-3 rounded-3 mb-3 shadow-sm reserve-btn" style="font-size: 1rem; transition: background-color 0.2s;">Reserve</button>
+                    
+                    <p class="text-center text-secondary mb-3" style="font-size: 0.9rem;">You won't be charged yet</p>
+                    
+                    <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-light-subtle" style="font-size: 0.95rem; color: #222;">
+                        <span class="text-decoration-underline" id="calc-text">&#8377;<%= listing.price.toLocaleString("en-IN") %> x 1 night</span>
+                        <span id="calc-total">&#8377;<%= listing.price.toLocaleString("en-IN") %></span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between fw-bold" style="font-size: 1.1rem; color: #222;">
+                        <span>Total before taxes</span>
+                        <span id="final-total">&#8377;<%= listing.price.toLocaleString("en-IN") %></span>
                     </div>
                 </div>
             </div>
-            <% } %>
-        </div>
-        <% } %>
-
-        <!-- Map -->
-        <div class="mb-5">
-            <h3 class="fw-bold mb-3">Where you'll be</h3>
-            <div id="map" class="w-100 rounded-4 shadow-sm" style="height: 450px;"></div>
         </div>
 
     </div>
 
+    <!-- Description Modal -->
+    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0 pb-0 px-4 pt-4">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-4 pb-5 pt-0">
+                    <h3 class="fw-bold mb-4">About this space</h3>
+                    <p class="fs-6" style="white-space: pre-line; color: #222222; line-height: 1.6;"><%= listing.description %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fix for modal stacking context issue -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const modal = document.getElementById('descriptionModal');
+            if(modal) {
+                document.body.appendChild(modal);
+            }
+        });
+    </script>
+
     <script src="/js/map.js"></script>
+    <script>
+        function showLoginPrompt() {
+            if (typeof Toastify !== 'undefined') {
+                Toastify({
+                    text: "Login to add to your favourite",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    style: { background: "#ff385c", color: "white", borderRadius: "10px", fontWeight: "600" }
+                }).showToast();
+            } else {
+                alert("Login to add to your favourite");
+            }
+        }
+    </script>
+    <script>
+        const pricePerNight = <%= listing.price %>;
+        const checkinInput = document.getElementById('checkin');
+        const checkoutInput = document.getElementById('checkout');
+        const calcText = document.getElementById('calc-text');
+        const calcTotal = document.getElementById('calc-total');
+        const finalTotal = document.getElementById('final-total');
+
+        const guestsInput = document.getElementById('guests');
+        const maxGuestsLimit = <%= listing.maxGuests || 1 %>;
+        let counts = { adults: 1, children: 0, infants: 0 };
+
+        function updateGuests(type, change) {
+            let newTotal = counts.adults + counts.children + (type !== 'infants' ? change : 0);
+            
+            if (change > 0 && type !== 'infants' && newTotal > maxGuestsLimit) {
+                if (typeof Toastify !== 'undefined') {
+                    Toastify({
+                        text: `This place allows a maximum of ${maxGuestsLimit} guests.`,
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        style: { background: "#ff385c", color: "white", borderRadius: "10px", fontWeight: "600" }
+                    }).showToast();
+                } else {
+                    alert(`This place allows a maximum of ${maxGuestsLimit} guests.`);
+                }
+                return;
+            }
+
+            if (counts[type] + change < (type === 'adults' ? 1 : 0)) return;
+
+            counts[type] += change;
+            
+            document.getElementById(`${type}-count`).innerText = counts[type];
+            document.getElementById(`btn-${type}-minus`).disabled = (counts[type] <= (type === 'adults' ? 1 : 0));
+            document.getElementById(`btn-${type}-plus`).disabled = (type !== 'infants' && counts.adults + counts.children >= maxGuestsLimit);
+
+            if (type !== 'infants') {
+                document.getElementById('btn-adults-plus').disabled = (counts.adults + counts.children >= maxGuestsLimit);
+                document.getElementById('btn-children-plus').disabled = (counts.adults + counts.children >= maxGuestsLimit);
+            }
+
+            let totalGuests = counts.adults + counts.children;
+            let text = `${totalGuests} guest${totalGuests > 1 ? 's' : ''}`;
+            if (counts.infants > 0) text += `, ${counts.infants} infant${counts.infants > 1 ? 's' : ''}`;
+            
+            document.getElementById('guestCountText').innerText = text;
+            
+            if (guestsInput) {
+                guestsInput.value = totalGuests;
+                guestsInput.dispatchEvent(new Event('change'));
+            }
+        }
+        
+        // Initial setup for buttons based on maxGuests
+        if (counts.adults >= maxGuestsLimit) {
+            document.getElementById('btn-adults-plus').disabled = true;
+            document.getElementById('btn-children-plus').disabled = true;
+        }
+
+        function updatePrice() {
+            if(checkinInput.value && checkoutInput.value) {
+                const checkin = new Date(checkinInput.value);
+                const checkout = new Date(checkoutInput.value);
+                const timeDiff = checkout.getTime() - checkin.getTime();
+                let nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                
+                if (nights <= 0) {
+                    nights = 1;
+                }
+                
+                const total = pricePerNight * nights;
+                
+                calcText.innerHTML = `&#8377;${pricePerNight.toLocaleString("en-IN")} x ${nights} night${nights > 1 ? 's' : ''}`;
+                calcTotal.innerHTML = `&#8377;${total.toLocaleString("en-IN")}`;
+                finalTotal.innerHTML = `&#8377;${total.toLocaleString("en-IN")}`;
+            }
+        }
+
+        checkinInput.addEventListener('change', updatePrice);
+        checkoutInput.addEventListener('change', updatePrice);
+        if (guestsInput) guestsInput.addEventListener('change', updatePrice);
+
+        document.getElementById('reserveBtn').addEventListener('click', () => {
+            const checkin = checkinInput.value;
+            const checkout = checkoutInput.value;
+            if (!checkin || !checkout) {
+                if (typeof Toastify !== 'undefined') {
+                    Toastify({
+                        text: "Please select check-in and checkout dates.",
+                        duration: 3000, gravity: "top", position: "center",
+                        style: { background: "#ff385c", color: "white", borderRadius: "10px", fontWeight: "600" }
+                    }).showToast();
+                } else {
+                    alert("Please select check-in and checkout dates.");
+                }
+                return;
+            }
+            window.location.href = `/listings/<%= listing._id %>/book?checkin=${checkin}&checkout=${checkout}&adults=${counts.adults}&children=${counts.children}&infants=${counts.infants}`;
+        });
+    </script>

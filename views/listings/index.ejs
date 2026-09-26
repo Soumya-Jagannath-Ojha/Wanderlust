@@ -2,7 +2,7 @@
 
     <!-- Tags / Filter section -->
     <div id="filters">
-        <% const tags=[ { name: "All", icon: "fa-border-all" }, { name: "Trending" , icon: "fa-fire" }, { name: "Surfing" , icon: "fa-water" }, {
+        <% const tags=[ { name: "All", icon: "fa-home" }, { name: "Trending" , icon: "fa-fire" }, { name: "Surfing" , icon: "fa-water" }, {
             name: "Amazing cities" , icon: "fa-city" }, { name: "Beach" , icon: "fa-umbrella" }, { name: "Farms" ,
             icon: "fa-cow" }, { name: "Lake" , icon: "fa-mountain" }, { name: "Castles" ,
             icon: "fa-brands fa-fort-awesome" }, { name: "Rooms" , icon: "fa-bed" }, { name: "Forest" , icon: "fa-tree"
@@ -30,12 +30,15 @@
                         <div class="listing-img-wrap">
                             <img src="<%= listing.image.url %>" class="listing-img" alt="listing_img">
                             
-                            <% if (currUser) { %>
-                                <% const isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString()); %>
-                                <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); toggleFavorite(this, '<%= listing._id %>')">
-                                    <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
-                                </div>
-                            <% } %>
+                            <% 
+                                let isFav = false;
+                                if (currUser) {
+                                    isFav = currUser.favorites && currUser.favorites.some(fav => fav.toString() === listing._id.toString());
+                                }
+                            %>
+                            <div class="favorite-btn <%= isFav ? 'favorited' : '' %>" data-id="<%= listing._id %>" onclick="event.preventDefault(); <% if (currUser) { %>toggleFavorite(this, '<%= listing._id %>')<% } else { %>showLoginPrompt()<% } %>">
+                                <i class="<%= isFav ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                            </div>
 
                             <div class="listing-overlay">
                                 <div class="listing-info">
@@ -49,3 +52,19 @@
             </div>
         <% } %>
     </div>
+
+    <script>
+        function showLoginPrompt() {
+            if (typeof Toastify !== 'undefined') {
+                Toastify({
+                    text: "Login to add to your favourite",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    style: { background: "#ff385c", color: "white", borderRadius: "10px", fontWeight: "600" }
+                }).showToast();
+            } else {
+                alert("Login to add to your favourite");
+            }
+        }
+    </script>

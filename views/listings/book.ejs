@@ -1,0 +1,179 @@
+<% layout("/layouts/boilerplate") %>
+<div class="container py-4" style="max-width: 1000px;">
+    
+    <div class="d-flex align-items-center mb-5">
+        <a href="/listings/<%= listing._id %>" class="btn btn-light rounded-circle shadow-sm me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <h2 class="fw-bold mb-0">Request to book</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7 pe-md-5 mb-4 mb-md-0">
+            
+            <% if (!currUser) { %>
+            <!-- Step 1: Login -->
+            <div class="card border border-light-subtle rounded-4 p-4 shadow-sm mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">1. Log in or sign up</h5>
+                    <a href="/login" class="btn btn-primary text-dark fw-bold rounded-3 px-4">Continue</a>
+                </div>
+            </div>
+
+            <!-- Step 2: Payment Method -->
+            <div class="card border border-light-subtle rounded-4 p-4 shadow-sm mb-4 opacity-50">
+                <h5 class="fw-bold mb-0">2. Add a payment method</h5>
+            </div>
+
+            <!-- Step 3: Proceed -->
+            <div class="card border border-light-subtle rounded-4 p-4 shadow-sm mb-4 opacity-50">
+                <h5 class="fw-bold mb-0">3. Proceed to payment</h5>
+            </div>
+            <% } else { %>
+            <!-- Proceed to Payment (Logged In) -->
+            <div class="pe-md-4">
+                <h3 class="fw-bold mb-3">Proceed to payment</h3>
+                <p class="text-dark mb-4 fs-6">You'll be directed to Razorpay to complete payment.</p>
+
+                <p class="text-dark mb-4 fs-6" style="line-height: 1.5;">
+                    The host has 24 hours to accept your request. You'll pay now, but get a full refund
+                    if the booking isn't confirmed.
+                </p>
+
+                <hr class="my-4 border-secondary-subtle" />
+
+                <p class="text-dark mb-4" style="font-size: 0.95rem;">
+                    By selecting the button, I agree to the <a href="#" class="text-dark fw-bold text-decoration-underline">booking terms</a>.
+                </p>
+
+                <button id="razorpayBtn" class="btn btn-secondary w-100 py-3 rounded-3 fw-bold fs-5 d-flex align-items-center justify-content-center" style="border-radius: 12px !important;">
+                    Continue to <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" class="ms-2" style="height: 24px;">
+                </button>
+            </div>
+            <% } %>
+            
+        </div>
+
+        <!-- Right Column: Booking Summary -->
+        <div class="col-md-5">
+            <div class="card border border-light-subtle shadow-lg rounded-4 p-4 sticky-top bg-white" style="top: 100px;">
+                <!-- Listing Info -->
+                <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-light-subtle">
+                    <img src="<%= listing.image.url.replace('/upload', '/upload/w_200,h_200,c_fill') %>" alt="Listing Image" class="rounded-3 me-3 object-fit-cover" style="width: 100px; height: 100px;">
+                    <div>
+                        <h6 class="fw-bold mb-1 fs-5"><%= listing.title %></h6>
+                        <div class="d-flex align-items-center text-secondary" style="font-size: 0.85rem;">
+                            <% if (listing.reviews && listing.reviews.length > 0) { %>
+                                <% 
+                                    let sum = 0;
+                                    listing.reviews.forEach(r => sum += r.rating);
+                                    let avg = (sum / listing.reviews.length).toFixed(2);
+                                %>
+                                <i class="fa-solid fa-star text-dark me-1"></i> <span class="text-dark fw-bold me-1"><%= avg %></span> (<%= listing.reviews.length %>) <span class="mx-1">&middot;</span> 
+                            <% } else { %>
+                                <i class="fa-solid fa-star text-dark me-1"></i> <span class="text-dark fw-bold me-1">New</span> <span class="mx-1">&middot;</span> 
+                            <% } %>
+                            <span><i class="fa-solid fa-medal me-1"></i>Guest favourite</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 pb-4 border-bottom border-light-subtle">
+                    <h6 class="fw-bold mb-2">Free cancellation</h6>
+                    <p class="text-secondary mb-0" style="font-size: 0.9rem;">Cancel before check-in for a full refund. <a href="#" class="text-dark fw-bold text-decoration-underline">Full policy</a></p>
+                </div>
+
+                <div class="mb-4">
+                    <!-- Dates -->
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <h6 class="fw-bold mb-1">Dates</h6>
+                            <p class="text-secondary mb-0" id="display-dates" style="font-size: 0.9rem;">
+                                <% if(checkin && checkout) { %>
+                                    <%= new Date(checkin).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %> - 
+                                    <%= new Date(checkout).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                <% } else { %>
+                                    Not selected
+                                <% } %>
+                            </p>
+                        </div>
+                        <a href="/listings/<%= listing._id %>" class="btn btn-light btn-sm fw-bold rounded-pill px-3 py-1 align-self-start">Change</a>
+                    </div>
+                    
+                    <!-- Guests -->
+                    <div class="d-flex justify-content-between mb-4">
+                        <div>
+                            <h6 class="fw-bold mb-1">Guests</h6>
+                            <p class="text-secondary mb-0" style="font-size: 0.9rem;">
+                                <% let a = parseInt(adults) || 1; let c = parseInt(children) || 0; let total = a + c; %>
+                                <%= total %> guest<%= total > 1 ? 's' : '' %>
+                                <% if(parseInt(infants) > 0) { %>, <%= infants %> infant<%= infants > 1 ? 's' : '' %><% } %>
+                            </p>
+                        </div>
+                        <a href="/listings/<%= listing._id %>" class="btn btn-light btn-sm fw-bold rounded-pill px-3 py-1 align-self-start">Change</a>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-top border-light-subtle">
+                    <h6 class="fw-bold mb-3">Price details</h6>
+                    
+                    <% 
+                        let nights = 1;
+                        if(checkin && checkout) {
+                            const cin = new Date(checkin);
+                            const cout = new Date(checkout);
+                            const diff = cout.getTime() - cin.getTime();
+                            nights = Math.ceil(diff / (1000 * 3600 * 24));
+                            if(nights <= 0) nights = 1;
+                        }
+                        const baseTotal = listing.price * nights;
+                        const taxes = Math.round(baseTotal * 0.05); // Simulated 5% tax
+                        const finalTotal = baseTotal + taxes;
+                    %>
+
+                    <div class="d-flex justify-content-between mb-2" style="font-size: 0.95rem;">
+                        <span>&#8377;<%= listing.price.toLocaleString("en-IN") %> x <%= nights %> night<%= nights > 1 ? 's' : '' %></span>
+                        <span>&#8377;<%= baseTotal.toLocaleString("en-IN") %></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4 pb-4 border-bottom border-light-subtle" style="font-size: 0.95rem;">
+                        <span>Taxes</span>
+                        <span>&#8377;<%= taxes.toLocaleString("en-IN") %></span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total (INR)</span>
+                        <span>&#8377;<%= finalTotal.toLocaleString("en-IN") %>/-</span>
+                    </div>
+                    <a href="#" class="text-dark fw-bold text-decoration-underline" style="font-size: 0.85rem;">Price breakdown</a>
+                </div>
+                
+            </div>
+            
+            <div class="mt-4 p-3 rounded-3 text-center" style="background-color: #fdf5f9; border: 1px solid #f9dbe9;">
+                <span style="font-size: 0.9rem; font-weight: 600; color: #b0155b;"><i class="fa-solid fa-gem me-2"></i>Rare find! This place is usually booked</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const razorpayBtn = document.getElementById("razorpayBtn");
+        if(razorpayBtn) {
+            razorpayBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (typeof Toastify !== 'undefined') {
+                    Toastify({
+                        text: "This feature is coming soon!",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        style: { background: "#5FB1E9", color: "white", borderRadius: "10px", fontWeight: "600" }
+                    }).showToast();
+                } else {
+                    alert("This feature is coming soon!");
+                }
+            });
+        }
+    });
+</script>

@@ -18,6 +18,11 @@ const listingSchema = new Schema({
     required: true,
   },
   price: Number,
+  maxGuests: {
+    type: Number,
+    required: true,
+    default: 1
+  },
   location: String,
   country: String,
   reviews:[

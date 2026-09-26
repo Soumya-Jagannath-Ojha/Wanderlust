@@ -97,6 +97,9 @@ app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "UP", message: "Server is healthy" });
+});
 
 
 app.all("*",(req,res,next)=>{
